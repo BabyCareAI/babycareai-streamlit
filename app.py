@@ -209,15 +209,21 @@ def process_symptoms():
 def show_diagnosis():
     """최종 진단 결과 표시"""
     try:
-        with st.spinner("진단 결과를 생성하고 있습니다..."):
-            diagnosis = api_service.get_final_diagnosis(st.session_state.diagnosis_id)
-            
-            st.subheader("진단 결과")
-            st.write(diagnosis.get('diagnosis', '진단 결과를 불러오는 중입니다...'))
-            
-            if st.button("새로운 진단 시작하기"):
-                reset_session()
-                st.experimental_rerun()
+        st.subheader("진단 결과")
+        
+        # 스트리밍 응답을 표시할 빈 컨테이너 생성
+        diagnosis_container = st.empty()
+        full_diagnosis = ""
+        
+        # 스트리밍 응답 처리
+        for chunk in api_service.get_final_diagnosis(st.session_state.diagnosis_id):
+            if 'chunk' in chunk:
+                full_diagnosis += chunk['chunk']
+                diagnosis_container.write(full_diagnosis)
+        
+        if st.button("새로운 진단 시작하기"):
+            reset_session()
+            st.experimental_rerun()
     except Exception as e:
         st.error(f"오류가 발생했습니다: {str(e)}")
 

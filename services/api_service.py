@@ -99,6 +99,7 @@ class APIService:
                         data = json.loads(line[6:])  # 'data: ' 이후의 JSON 파싱
                         if 'chunk' in data:
                             full_diagnosis += data['chunk']
+                            yield {"chunk": data['chunk']}  # 각 청크를 실시간으로 반환
                         elif 'error' in data:
                             raise Exception(data['error'])
                     except json.JSONDecodeError:

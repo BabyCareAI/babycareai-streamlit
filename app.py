@@ -34,12 +34,87 @@ def process_image_upload():
     """이미지 업로드 및 처리"""
     try:
         uploaded_file = st.file_uploader("피부 사진을 업로드해주세요", type=['jpg', 'jpeg', 'png'])
-        body_part = st.selectbox(
-            "피부 부위를 선택해주세요",
-            ["FACE", "BODY", "SCALP", "HANDS", "FEET"]
-        )
+        
+        # 부위 카테고리별 그룹화
+        body_part_categories = {
+            "얼굴 부위": [
+                ("얼굴", "FACE"),
+                ("뺨", "CHEEKS"),
+                ("이마", "FOREHEAD"),
+                ("턱", "CHIN"),
+                ("눈", "EYES"),
+                ("눈꺼풀", "EYELIDS"),
+                ("코", "NOSE"),
+                ("입", "MOUTH"),
+                ("입술", "LIPS"),
+                ("귀", "EAR"),
+                ("헤어라인", "HAIRLINE"),
+                ("입안", "INSIDE_THE_MOUTH"),
+                ("입천장", "ROOF_OF_THE_MOUTH"),
+                ("잇몸", "GUMS"),
+                ("혀", "TONGUE")
+            ],
+            "상체 부위": [
+                ("목", "NECK"),
+                ("목구멍", "THROAT"),
+                ("가슴", "CHEST"),
+                ("배", "TUMMY"),
+                ("몸통", "TORSO"),
+                ("등", "BACK"),
+                ("겨드랑이", "ARMPITS"),
+                ("팔", "ARMS"),
+                ("팔꿈치", "ELBOWS"),
+                ("손", "HANDS"),
+                ("손바닥", "PALMS"),
+                ("손목", "WRISTS")
+            ],
+            "하체 부위": [
+                ("다리", "LEGS"),
+                ("무릎", "KNEES"),
+                ("무릎뼈", "KNEECAPS"),
+                ("오금", "BACKS_OF_KNEES"),
+                ("허벅지", "THIGHS"),
+                ("허벅지 안쪽", "INNER_THIGHS"),
+                ("발", "FEET"),
+                ("발바닥", "SOLES"),
+                ("발가락", "TOES"),
+                ("발가락 사이", "BETWEEN_TOES")
+            ],
+            "기타 부위": [
+                ("두피", "SCALP"),
+                ("머리", "HEAD"),
+                ("엉덩이", "BOTTOM"),
+                ("기저귀 부위", "NAPPY_AREA"),
+                ("생식기", "GENITALS"),
+                ("피부 주름", "SKIN_FOLDS"),
+                ("물린 부위 주변 피부", "SKIN_AROUND_THE_BITE"),
+                ("전신", "WHOLE_BODY")
+            ]
+        }
 
-        if uploaded_file and body_part:
+        # 부위 선택 UI
+        st.subheader("피부 부위 선택")
+        
+        # 모든 부위를 하나의 리스트로 변환
+        all_body_parts = []
+        for category, parts in body_part_categories.items():
+            all_body_parts.extend([(f"{category} - {name}", enum) for name, enum in parts])
+        
+        # 부위 선택
+        selected_option = st.selectbox(
+            "피부 부위를 선택해주세요",
+            options=[name for name, _ in all_body_parts],
+            format_func=lambda x: x.split(" - ")[1]  # 카테고리 제외하고 부위 이름만 표시
+        )
+        
+        # 선택된 부위의 enum 값 찾기
+        selected_body_part = next((enum for name, enum in all_body_parts if name == selected_option), None)
+        
+        # 선택된 부위 표시
+        if selected_body_part:
+            st.success(f"선택된 부위: {selected_option.split(' - ')[1]}")
+
+        if uploaded_file and selected_body_part:
             if st.button("진단 시작"):
                 # 이미지 파일 확장자 확인
                 file_extension = os.path.splitext(uploaded_file.name)[1].lower()
@@ -50,7 +125,7 @@ def process_image_upload():
                 # 이미지 업로드
                 with st.spinner("피부 사진 업로드 중..."):
                     image_bytes = uploaded_file.getvalue()
-                    response = api_service.upload_image(image_bytes, body_part)
+                    response = api_service.upload_image(image_bytes, selected_body_part)
                     st.session_state.diagnosis_id = response.get('diagnosisId')
                 
                 # 이미지 검증

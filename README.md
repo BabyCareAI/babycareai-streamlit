@@ -2,6 +2,9 @@
 
 이 프로젝트는 아기의 피부 상태를 진단하는 Streamlit 기반의 웹 애플리케이션입니다.
 
+https://github.com/user-attachments/assets/09c5f669-d30b-4a56-ab8d-a3b556dd6d9c
+
+
 ## 설치 방법
 
 1. Python 3.8 이상이 설치되어 있어야 합니다.

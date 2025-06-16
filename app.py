@@ -153,147 +153,157 @@ def process_symptoms():
     """증상 입력 처리"""
     try:
         if not st.session_state.symptoms_submitted:
-            # 증상 입력 UI를 위한 컨테이너 생성
-            symptoms_container = st.container()
+            st.subheader("추가 증상 입력")
             
-            with symptoms_container:
-                st.subheader("추가 증상 입력")
-                
-                # 증상 카테고리별 그룹화
-                symptom_categories = {
-                    "피부 관련": [
-                        ("발진", "RASH"),
-                        ("붉은 발진", "RED_RASH"),
-                        ("가려운 발진", "ITCHY_RASH"),
-                        ("여드름성 발진", "PIMPLY_RASH"),
-                        ("고리 모양 발진", "RING_SHAPED_RASH"),
-                        ("번지는 발진", "SPREADING_RASH"),
-                        ("얼룩덜룩한 발진", "BLOTCHY_RASH"),
-                        ("붉은 반점", "RED_SPOTS"),
-                        ("붉은 덩어리", "RED_BUMPS"),
-                        ("가려운 덩어리", "ITCHY_BUMPS"),
-                        ("솟아오른 덩어리", "RAISED_BUMPS"),
-                        ("작은 솟아오른 반점", "TINY_RAISED_SPOTS"),
-                        ("붉은 피부", "RED_SKIN"),
-                        ("붉어짐", "REDNESS"),
-                        ("가려운 피부", "ITCHY_SKIN"),
-                        ("건조한 피부", "DRY_SKIN"),
-                        ("비늘 모양 피부", "SCALY_SKIN"),
-                        ("껍질이 벗겨지는 피부", "FLAKY_SKIN"),
-                        ("피부 벗겨짐", "PEELING_SKIN"),
-                        ("갈라진 피부", "CRACKED_SKIN"),
-                        ("물집", "BLISTERS"),
-                        ("수포", "FLUID_FILLED_BLISTERS"),
-                        ("통증성 물집", "PAINFUL_BLISTERS"),
-                        ("고름 찬 반점", "PUS_FILLED_SPOTS"),
-                        ("작은 물집 같은 염증", "SMALL_BLISTER_LIKE_SORES"),
-                        ("작은 황백색 농포", "SMALL_YELLOW_WHITE_PUSTULES"),
-                        ("여드름", "PIMPLES"),
-                        ("좁쌀 여드름", "WHITEHEADS"),
-                        ("하얀 반점", "WHITE_PATCHES"),
-                        ("비늘 모양 반점", "SCALY_PATCHES"),
-                        ("솟아오른 반점", "RAISED_PATCHES"),
-                        ("염증", "SORES"),
-                        ("굴 같은 자국", "BURROWS"),
-                        ("통증 없는 혹", "PAINLESS_BUMP"),
-                        ("악화 (습진)", "FLARE_UPS_ECZEMA"),
-                        ("만졌을 때 따뜻함", "WARM_TO_TOUCH"),
-                        ("부기", "SWELLING"),
-                        ("출혈", "BLEEDING")
-                    ],
-                    "눈 관련": [
-                        ("눈 분비물", "DISCHARGE_FROM_EYES"),
-                        ("눈 건조", "DRYNESS_EYES"),
-                        ("눈 자극", "EYE_IRRITATION"),
-                        ("눈의 이물감", "GRITTINESS_EYES"),
-                        ("가려운 눈", "ITCHY_EYES"),
-                        ("부은 눈", "PUFFY_EYES"),
-                        ("눈의 통증", "SORE_EYES"),
-                        ("붉은 눈", "RED_EYES"),
-                        ("눈물", "WATERY_EYES"),
-                        ("결막염", "PINK_EYE"),
-                        ("딱딱한 속눈썹", "CRUSTY_EYELASHES"),
-                        ("끈적거리는 눈꺼풀", "STICKY_EYELIDS")
-                    ],
-                    "일반 증상": [
-                        ("열", "FEVER"),
-                        ("갑작스러운 발열", "SUDDEN_FEVER"),
-                        ("기침", "COUGH"),
-                        ("콧물", "RUNNY_NOSE"),
-                        ("재채기", "SNEEZING"),
-                        ("목의 통증", "SORE_THROAT"),
-                        ("귀앓이", "EARACHE"),
-                        ("귀 잡아당김", "TUGGING_AT_EAR"),
-                        ("입의 통증", "SORE_MOUTH"),
-                        ("구취", "BAD_BREATH"),
-                        ("혀의 백태", "WHITE_COATING_ON_TONGUE"),
-                        ("부은 잇몸", "SWOLLEN_GUMS"),
-                        ("부은 샘", "SWOLLEN_GLANDS"),
-                        ("부은 림프샘", "SWOLLEN_LYMPH_GLANDS"),
-                        ("부은 목 샘", "SWOLLEN_NECK_GLANDS"),
-                        ("식욕 부진", "LOSS_OF_APPETITE"),
-                        ("수유 거부", "RELUCTANCE_TO_FEED"),
-                        ("설사", "DIARRHOEA"),
-                        ("경미한 설사", "MILD_DIARRHOEA"),
-                        ("메스꺼움", "NAUSEA"),
-                        ("두통", "HEADACHE"),
-                        ("근육통", "MUSCLE_ACHES"),
-                        ("쑤시고 아픔", "ACHES_AND_PAINS"),
-                        ("통증", "PAIN"),
-                        ("쓰림", "SORENESS"),
-                        ("불쾌감", "DISCOMFORT"),
-                        ("피로", "TIREDNESS"),
-                        ("평소와 다른 피로", "UNUSUAL_TIREDNESS"),
-                        ("무기력함", "LETHARGIC"),
-                        ("과민성", "IRRITABILITY"),
-                        ("짜증", "ANNOYANCE"),
-                        ("칭얼거림", "GRIZZLY"),
-                        ("침 흘림", "DROOLING"),
-                        ("청각 곤란", "DIFFICULTY_HEARING"),
-                        ("삼킴 곤란", "DIFFICULTY_SWALLOWING"),
-                        ("독감 유사 증상", "FLU_LIKE_SYMPTOMS"),
-                        ("황달", "JAUNDICE"),
-                        ("알레르기 반응", "ALLERGIC_REACTIONS"),
-                        ("탈모 (두피)", "HAIR_LOSS_SCALP"),
-                        ("기저귀 갈 때 울음", "CRYING_DURING_NAPPY_CHANGES")
-                    ]
-                }
+            # 증상 카테고리별 그룹화
+            symptom_categories = {
+                "피부 관련": [
+                    ("발진", "RASH"),
+                    ("붉은 발진", "RED_RASH"),
+                    ("가려운 발진", "ITCHY_RASH"),
+                    ("여드름성 발진", "PIMPLY_RASH"),
+                    ("고리 모양 발진", "RING_SHAPED_RASH"),
+                    ("번지는 발진", "SPREADING_RASH"),
+                    ("얼룩덜룩한 발진", "BLOTCHY_RASH"),
+                    ("붉은 반점", "RED_SPOTS"),
+                    ("붉은 덩어리", "RED_BUMPS"),
+                    ("가려운 덩어리", "ITCHY_BUMPS"),
+                    ("솟아오른 덩어리", "RAISED_BUMPS"),
+                    ("작은 솟아오른 반점", "TINY_RAISED_SPOTS"),
+                    ("붉은 피부", "RED_SKIN"),
+                    ("붉어짐", "REDNESS"),
+                    ("가려운 피부", "ITCHY_SKIN"),
+                    ("건조한 피부", "DRY_SKIN"),
+                    ("비늘 모양 피부", "SCALY_SKIN"),
+                    ("껍질이 벗겨지는 피부", "FLAKY_SKIN"),
+                    ("피부 벗겨짐", "PEELING_SKIN"),
+                    ("갈라진 피부", "CRACKED_SKIN"),
+                    ("물집", "BLISTERS"),
+                    ("수포", "FLUID_FILLED_BLISTERS"),
+                    ("통증성 물집", "PAINFUL_BLISTERS"),
+                    ("고름 찬 반점", "PUS_FILLED_SPOTS"),
+                    ("작은 물집 같은 염증", "SMALL_BLISTER_LIKE_SORES"),
+                    ("작은 황백색 농포", "SMALL_YELLOW_WHITE_PUSTULES"),
+                    ("여드름", "PIMPLES"),
+                    ("좁쌀 여드름", "WHITEHEADS"),
+                    ("하얀 반점", "WHITE_PATCHES"),
+                    ("비늘 모양 반점", "SCALY_PATCHES"),
+                    ("솟아오른 반점", "RAISED_PATCHES"),
+                    ("염증", "SORES"),
+                    ("굴 같은 자국", "BURROWS"),
+                    ("통증 없는 혹", "PAINLESS_BUMP"),
+                    ("악화 (습진)", "FLARE_UPS_ECZEMA"),
+                    ("만졌을 때 따뜻함", "WARM_TO_TOUCH"),
+                    ("부기", "SWELLING"),
+                    ("출혈", "BLEEDING")
+                ],
+                "눈 관련": [
+                    ("눈 분비물", "DISCHARGE_FROM_EYES"),
+                    ("눈 건조", "DRYNESS_EYES"),
+                    ("눈 자극", "EYE_IRRITATION"),
+                    ("눈의 이물감", "GRITTINESS_EYES"),
+                    ("가려운 눈", "ITCHY_EYES"),
+                    ("부은 눈", "PUFFY_EYES"),
+                    ("눈의 통증", "SORE_EYES"),
+                    ("붉은 눈", "RED_EYES"),
+                    ("눈물", "WATERY_EYES"),
+                    ("결막염", "PINK_EYE"),
+                    ("딱딱한 속눈썹", "CRUSTY_EYELASHES"),
+                    ("끈적거리는 눈꺼풀", "STICKY_EYELIDS")
+                ],
+                "일반 증상": [
+                    ("열", "FEVER"),
+                    ("갑작스러운 발열", "SUDDEN_FEVER"),
+                    ("기침", "COUGH"),
+                    ("콧물", "RUNNY_NOSE"),
+                    ("재채기", "SNEEZING"),
+                    ("목의 통증", "SORE_THROAT"),
+                    ("귀앓이", "EARACHE"),
+                    ("귀 잡아당김", "TUGGING_AT_EAR"),
+                    ("입의 통증", "SORE_MOUTH"),
+                    ("구취", "BAD_BREATH"),
+                    ("혀의 백태", "WHITE_COATING_ON_TONGUE"),
+                    ("부은 잇몸", "SWOLLEN_GUMS"),
+                    ("부은 샘", "SWOLLEN_GLANDS"),
+                    ("부은 림프샘", "SWOLLEN_LYMPH_GLANDS"),
+                    ("부은 목 샘", "SWOLLEN_NECK_GLANDS"),
+                    ("식욕 부진", "LOSS_OF_APPETITE"),
+                    ("수유 거부", "RELUCTANCE_TO_FEED"),
+                    ("설사", "DIARRHOEA"),
+                    ("경미한 설사", "MILD_DIARRHOEA"),
+                    ("메스꺼움", "NAUSEA"),
+                    ("두통", "HEADACHE"),
+                    ("근육통", "MUSCLE_ACHES"),
+                    ("쑤시고 아픔", "ACHES_AND_PAINS"),
+                    ("통증", "PAIN"),
+                    ("쓰림", "SORENESS"),
+                    ("불쾌감", "DISCOMFORT"),
+                    ("피로", "TIREDNESS"),
+                    ("평소와 다른 피로", "UNUSUAL_TIREDNESS"),
+                    ("무기력함", "LETHARGIC"),
+                    ("과민성", "IRRITABILITY"),
+                    ("짜증", "ANNOYANCE"),
+                    ("칭얼거림", "GRIZZLY"),
+                    ("침 흘림", "DROOLING"),
+                    ("청각 곤란", "DIFFICULTY_HEARING"),
+                    ("삼킴 곤란", "DIFFICULTY_SWALLOWING"),
+                    ("독감 유사 증상", "FLU_LIKE_SYMPTOMS"),
+                    ("황달", "JAUNDICE"),
+                    ("알레르기 반응", "ALLERGIC_REACTIONS"),
+                    ("탈모 (두피)", "HAIR_LOSS_SCALP"),
+                    ("기저귀 갈 때 울음", "CRYING_DURING_NAPPY_CHANGES")
+                ]
+            }
+            
+            # 탭 생성
+            symptom_tabs = st.tabs(list(symptom_categories.keys()))
+            
+            selected_symptoms = []
+            
+            # 각 탭에 해당하는 증상 표시
+            for tab, (category, symptoms) in zip(symptom_tabs, symptom_categories.items()):
+                with tab:
+                    cols = st.columns(4)  # 4열로 구성
+                    for i, (symptom_name, symptom_enum) in enumerate(symptoms):
+                        with cols[i % 4]:
+                            if st.checkbox(symptom_name, key=f"symptom_{symptom_enum}"):
+                                selected_symptoms.append(symptom_enum)
 
-                # 증상 입력 UI
-                st.subheader("추가 증상 입력")
-                
-                # 탭 생성
-                symptom_tabs = st.tabs(list(symptom_categories.keys()))
-                
-                selected_symptoms = []
-                
-                # 각 탭에 해당하는 증상 표시
-                for tab, (category, symptoms) in zip(symptom_tabs, symptom_categories.items()):
-                    with tab:
-                        cols = st.columns(4)  # 4열로 구성
-                        for i, (symptom_name, symptom_enum) in enumerate(symptoms):
-                            with cols[i % 4]:
-                                if st.checkbox(symptom_name, key=f"symptom_{symptom_enum}"):
-                                    selected_symptoms.append(symptom_enum)
+            other_symptoms = st.text_area("기타 특이사항이 있다면 입력해주세요")
 
-                other_symptoms = st.text_area("기타 특이사항이 있다면 입력해주세요")
+            # 증상 제출 버튼을 위한 컨테이너 생성
+            submit_button_container = st.empty()
+            
+            # 증상 제출 버튼 표시
+            if submit_button_container.button("증상 제출"):
+                if not selected_symptoms:
+                    st.error("최소 1개 이상의 증상을 선택해주세요.")
+                    return
 
-                if st.button("증상 제출"):
-                    if not selected_symptoms:
-                        st.error("최소 1개 이상의 증상을 선택해주세요.")
-                        return
 
-                    with st.spinner("증상을 처리하고 있습니다..."):
-                        # 추가 증상 제출
-                        api_service.submit_symptoms(st.session_state.diagnosis_id, selected_symptoms)
-                        
-                        # 기타 증상 제출
-                        if other_symptoms:
-                            api_service.submit_other_symptoms(st.session_state.diagnosis_id, other_symptoms)
-                        
-                        st.session_state.symptoms_submitted = True
-                        st.session_state.current_step = 3
-                        st.experimental_rerun()
+                # 증상 제출 처리
+                try:                   
+                    # 로딩 메시지를 위한 컨테이너 생성
+                    loading_container = st.empty()
+                    # 버튼 컨테이너를 비워서 버튼 제거
+                    submit_button_container.empty()
+                    # 증상 처리 중 메시지 표시
+                    with loading_container:
+                        with st.spinner("증상을 처리하고 있습니다..."):
+                            # 추가 증상 제출
+                            api_service.submit_symptoms(st.session_state.diagnosis_id, selected_symptoms)
+                            
+                            # 기타 증상 제출
+                            if other_symptoms:
+                                api_service.submit_other_symptoms(st.session_state.diagnosis_id, other_symptoms)
+                            
+                            # 증상 제출이 완료된 후에 상태 업데이트
+                            st.session_state.symptoms_submitted = True
+                            st.session_state.current_step = 3
+                            
+                            st.experimental_rerun()
+                except Exception as e:
+                    st.error(f"증상 제출 중 오류가 발생했습니다: {str(e)}")
     except Exception as e:
         st.error(f"오류가 발생했습니다: {str(e)}")
 
@@ -301,7 +311,8 @@ def show_diagnosis():
     """최종 진단 결과 표시"""
     try:
         # 이전 UI를 완전히 지우기
-        st.empty()
+        for _ in range(10):  # 여러 번 empty()를 호출하여 모든 이전 UI 요소를 지움
+            st.empty()
         
         st.subheader("진단 결과")
         
